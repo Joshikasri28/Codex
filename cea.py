@@ -2,16 +2,9 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-# Load data
-try:
-    data = pd.read_excel('enjoysport.xlsx')
-except FileNotFoundError:
-    st.error("The file 'enjoysport.xlsx' was not found. Please ensure the file exists in the correct location.")
-    st.stop()
+st.title("Candidate Elimination Algorithm")
 
-concepts = data.iloc[:, 0:-1].values
-target = data.iloc[:, -1].values
-
+# Function to perform the Candidate Elimination Algorithm
 def learn(concepts, target):
     specific_h = concepts[0].copy()
     general_h = [["?" for _ in range(len(specific_h))] for _ in range(len(specific_h))]
@@ -35,8 +28,21 @@ def learn(concepts, target):
 
     return specific_h, general_h
 
-s_final, g_final = learn(concepts, target)
+# File upload and processing
+uploaded_file = st.file_uploader("Upload a dataset (Excel format)", type=["xlsx"])
 
-# Display results
-st.write("Final Specific_h:", s_final)
-st.write("Final General_h:", g_final)
+if uploaded_file is not None:
+    try:
+        data = pd.read_excel(uploaded_file)
+        st.success("File uploaded successfully.")
+        concepts = data.iloc[:, 0:-1].values
+        target = data.iloc[:, -1].values
+
+        s_final, g_final = learn(concepts, target)
+
+        # Display results
+        st.write("Final Specific_h:", s_final)
+        st.write("Final General_h:", g_final)
+
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
