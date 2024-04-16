@@ -2,7 +2,12 @@ import numpy as np
 import pandas as pd
 
 # Assuming the file 'enjoysport.xlsx' is in the same directory as your script
-data = pd.read_excel('enjoysport.xlsx')
+try:
+    data = pd.read_excel('enjoysport.xlsx')
+except FileNotFoundError:
+    print("The file 'enjoysport.xlsx' was not found. Please ensure the file exists in the correct location.")
+    exit()
+
 concepts = data.iloc[:, 0:-1].values
 target = data.iloc[:, -1].values
 
