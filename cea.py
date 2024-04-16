@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+# Assuming the file 'enjoysport.xlsx' is in the same directory as your script
 data = pd.read_excel('enjoysport.xlsx')
 concepts = data.iloc[:, 0:-1].values
 target = data.iloc[:, -1].values
@@ -32,4 +33,3 @@ s_final, g_final = learn(concepts, target)
 
 print("Final Specific_h:", s_final, sep="\n")
 print("Final General_h:", g_final, sep="\n")
-
