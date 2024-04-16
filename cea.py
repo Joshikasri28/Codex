@@ -1,12 +1,13 @@
 import numpy as np
 import pandas as pd
+import streamlit as st
 
-# Assuming the file 'enjoysport.xlsx' is in the same directory as your script
+# Load data
 try:
     data = pd.read_excel('enjoysport.xlsx')
 except FileNotFoundError:
-    print("The file 'enjoysport.xlsx' was not found. Please ensure the file exists in the correct location.")
-    exit()
+    st.error("The file 'enjoysport.xlsx' was not found. Please ensure the file exists in the correct location.")
+    st.stop()
 
 concepts = data.iloc[:, 0:-1].values
 target = data.iloc[:, -1].values
@@ -36,5 +37,6 @@ def learn(concepts, target):
 
 s_final, g_final = learn(concepts, target)
 
-print("Final Specific_h:", s_final, sep="\n")
-print("Final General_h:", g_final, sep="\n")
+# Display results
+st.write("Final Specific_h:", s_final)
+st.write("Final General_h:", g_final)
