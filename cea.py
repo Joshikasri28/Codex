@@ -1,14 +1,6 @@
-import tkinter as tk
-from tkinter import filedialog
+import streamlit as st
 import numpy as np
 import pandas as pd
-
-def load_data():
-    filename = filedialog.askopenfilename()
-    data = pd.read_csv(filename)
-    concepts = np.array(data.iloc[:, 0:-1])
-    target = np.array(data.iloc[:, -1])
-    return concepts, target
 
 def learn(concepts, target):
     specific_h = concepts[0].copy()
@@ -30,24 +22,19 @@ def learn(concepts, target):
         general_h.remove(['?', '?', '?', '?', '?', '?'])
     return specific_h, general_h
 
-def run_algorithm():
-    concepts, target = load_data()
+def run_algorithm(data_file):
+    data = pd.read_csv(data_file)
+    concepts = np.array(data.iloc[:, 0:-1])
+    target = np.array(data.iloc[:, -1])
     s_final, g_final = learn(concepts, target)
-    s_final_label.config(text="Final Specific_h:\n" + str(s_final))
-    g_final_label.config(text="Final General_h:\n" + str(g_final))
+    return s_final, g_final
 
-# Creating UI
-root = tk.Tk()
-root.title("Candidate Elimination Algorithm")
-root.geometry("400x300")
+st.title("Candidate Elimination Algorithm")
 
-load_button = tk.Button(root, text="Load Data", command=run_algorithm)
-load_button.pack(pady=10)
-
-s_final_label = tk.Label(root, text="Final Specific_h:\n")
-s_final_label.pack(pady=5)
-
-g_final_label = tk.Label(root, text="Final General_h:\n")
-g_final_label.pack(pady=5)
-
-root.mainloop()
+uploaded_file = st.file_uploader("Upload CSV file", type="csv")
+if uploaded_file is not None:
+    s_final, g_final = run_algorithm(uploaded_file)
+    st.subheader("Final Specific_h:")
+    st.write(s_final)
+    st.subheader("Final General_h:")
+    st.write(g_final)
