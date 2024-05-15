@@ -1,8 +1,3 @@
-!pip install scikit-learn
-!pip show scikit-learn
-!pip install --upgrade scikit-learn
-!pip install --upgrade scikit-learn
-
 import streamlit as st
 import pandas as pd
 from sklearn.naive_bayes import GaussianNB
